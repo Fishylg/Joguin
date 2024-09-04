@@ -1,0 +1,281 @@
+<script>
+    // Pessoa
+    nome = ''
+    atackPessoa = 15
+    defesaPessoa = 10
+    vidaPessoa = 30
+
+    // Filho do Dragão
+    atackFilhoDg = 15
+    defesaFilhoDg = 10
+    vidaFilhoDg = 20
+
+    // Dragão
+    atackDg = 30
+    defesaDg = 20
+    vidaDg = 60
+
+    function caminhoEstreito() {
+        alert("Você entrou no caminho escuro, que coragem!")
+        alert("Você encontrou um baú misterioso e nele havia 3 itens diferentes: uma espada brilhante, uma armadura dourada e um cogumelo misterioso.")
+
+        escolhaItem = parseInt(prompt("Qual será o item que você irá pegar?\n\n1- Espada brilhante \n2- Armadura dourada \n3- Cogumelo misterioso"), 10)
+
+        while (isNaN(escolhaItem) || escolhaItem < 1 || escolhaItem > 3) {
+            escolhaItem = parseInt(prompt("Escolha uma opção válida:\n\n1- Espada brilhante \n2- Armadura dourada \n3- Cogumelo misterioso"), 10)
+        }
+
+        return escolhaItem
+    }
+
+    function corredorLuz() {
+        alert("Você entrou no corredor luminoso! Que coragem...")
+        alert("Agora você descobriu o porquê da luz forte... HÁ UM FILHOTE DE DRAGÃO DE FOGO NA SUA FRENTE! Agora ele está furioso pois você entrou em seu ninho...")
+        alert("Para sua sorte, a mãe do filhote não está presente, porém o filhote vai te atacar!")
+
+        alert("- Filhote Dragão -\n\nVida: " + vidaFilhoDg + "\nDefesa: " + defesaFilhoDg + "\nAtaque: " + atackFilhoDg)
+
+        while (vidaFilhoDg > 0 && vidaPessoa > 0) {
+            escolhaBatle = prompt("O que você fará? \n\n1- Atacar o filhote com " + atackPessoa + " de ataque agora\n2- Se defender dos " + atackFilhoDg + " de ataque do filhote e atacar duas vezes no próximo turno")
+
+            while (escolhaBatle !== "1" && escolhaBatle !== "2") {
+                escolhaBatle = prompt("Escolha uma opção válida: \n\n1- Atacar o filhote com " + atackPessoa + " de ataque agora\n2- Se defender dos " + atackFilhoDg + " de ataque do filhote e atacar duas vezes no próximo turno")
+            }
+
+            if (escolhaBatle === "1") {
+                // Atacar o filhote
+                danoCausado = Math.max(atackPessoa - defesaFilhoDg, 0)
+                vidaFilhoDg -= danoCausado
+                alert("Você atacou o filhote! O dano causado foi " + danoCausado + ". Vida do filhote agora é " + vidaFilhoDg + ".")
+
+                if (vidaFilhoDg > 0) {
+                    // Calcular o dano recebido
+                    danoRecebido = Math.max(atackFilhoDg - defesaPessoa, 0)
+                    vidaPessoa -= danoRecebido
+                    alert("O filhote atacou você e o dano recebido foi " + danoRecebido + ". Sua vida agora é " + vidaPessoa + ".")
+                }
+            } else if (escolhaBatle === "2") {
+                // Se defender
+                alert("Você se defendeu do ataque do filhote, sua defesa aumentou temporariamente.")
+
+                defesaOriginal = defesaPessoa
+                defesaPessoa += atackFilhoDg // Aumenta a defesa pela quantidade do ataque do filhote
+
+                escolhaSimNao = prompt("Agora você tem direito a atacar duas vezes! Deseja fazer o ataque duplo? \n\n'Sim' ou 'Não'")
+                escolhaSimNao = escolhaSimNao.toLowerCase()
+
+                if (escolhaSimNao === 'sim') {
+                    danoDuplo = Math.max(2 * atackPessoa - defesaFilhoDg, 0)
+                    vidaFilhoDg -= danoDuplo
+                    alert("Você atacou o filhote duas vezes! O dano total causado foi " + danoDuplo + ". A vida do filhote agora é " + vidaFilhoDg + ".")
+                } else if (escolhaSimNao === 'não' || escolhaSimNao === 'nao') {
+                    danoSimples = Math.max(atackPessoa - defesaFilhoDg, 0)
+                    vidaFilhoDg -= danoSimples
+                    alert("Você escolheu atacar apenas uma vez, dando um dano de " + danoSimples + ". Agora o filhote está com " + vidaFilhoDg + " de vida.")
+                } else {
+                    alert("Opção inválida, você perde seu turno!")
+                }
+
+                // Restaurar defesa original
+                defesaPessoa = defesaOriginal
+
+                // O filhote ataca se ainda estiver vivo
+                if (vidaFilhoDg > 0) {
+                    danoRecebido = Math.max(atackFilhoDg - defesaPessoa, 0)
+                    vidaPessoa -= danoRecebido
+                    alert("O filhote ainda está vivo e te atacou! O dano recebido foi " + danoRecebido + ". Sua vida agora é " + vidaPessoa + ".")
+                }
+
+            } else {
+                alert("Opção inválida, você perde seu turno!")
+            }
+
+            if (vidaFilhoDg > 0) {
+                // O filhote ainda está vivo e vai atacar
+                danoRecebido = Math.max(atackFilhoDg - defesaPessoa, 0)
+                vidaPessoa -= danoRecebido
+                alert("O filhote ainda está vivo com " + vidaFilhoDg + " de vida e pronto para o próximo ataque.")
+                alert("Agora é a vez dele! O filhote te desferiu um ataque de " + atackFilhoDg + ", agora você está com apenas " + vidaPessoa + " de vida.")
+            }
+        }
+
+        if (vidaPessoa <= 0) {
+            alert("Você foi derrotado pelo filhote de dragão. Fim de jogo.")
+            jogarDnv = prompt("Deseja jogar novamente? ")
+            jogarDnv = jogarDnv.toLowerCase()
+            if (jogarDnv === 'sim') {
+                alert("Parabéns pela escolha! Nos veremos novamente...")
+                Comeco()
+            } else if (jogarDnv === 'não' || jogarDnv === 'nao') {
+                alert("Adeus jovem explorador, até a próxima!")
+            }
+        } else {
+            alert("Parabéns! Você derrotou o filhote de dragão.")
+            corredorLiberdade()
+        }
+    }
+
+    function corredorLiberdade() {
+        alert("Que loucura! Mas a sua aventura ainda não acabou...")
+        alert("Após derrotar o Filhote, tudo ao seu redor desmorona. O chão em que você estava pisando quebrou...")
+        alert("Agora você está em uma nova sala, nessa sala contém um baú azul.")
+
+        abrirBau = prompt("Você deseja abrir o baú?")
+        abrirBau = abrirBau.toLowerCase()
+
+        if (abrirBau === 'sim') {
+            alert("Ao abrir o baú, você encontra uma corrente com uma aura brilhante. Por curiosidade, você a guarda e leva em sua mochila.")
+        } else if (abrirBau === 'não' || abrirBau === 'nao') {
+            alert("Está tudo bem! A curiosidade por matar o gato...")
+        }
+
+        alert("Após o barulho extremo que o desmoronamento causou, um rugido muito alto vem da superfície.")
+        alert("Você agora começa a ouvir alguma coisa se aproximando.")
+
+        escolhaBatleFinal = prompt("O que você fará agora? \n\n1- Se esconder \n2- Empunhar a espada e esperar até que a 'coisa' chegue")
+        escolhaBatleFinal = escolhaBatleFinal.toLowerCase()
+
+        if (escolhaBatleFinal === '1') {
+            alert("Você se escondeu atrás de uma grande pedra...")
+            alert("A 'coisa' chegou, quando você foi olhar... É a mãe do filhote que você matou!!!")
+            alert("Ela já sabe da sua presença, agora você vai ter que escolher entre lutar ou correr...")
+            
+            escolhaCorrerLutar = prompt("O que você vai decidir?\n\n1- Correr\n2- Lutar")
+            escolhaCorrerLutar = escolhaCorrerLutar.toLowerCase()
+
+            if (escolhaCorrerLutar === '1') {
+                alert("Você correu desesperadamente, porém o dragão te pegou... VOCÊ MORREU!")
+                jogarDnv = prompt("Deseja jogar novamente? ")
+                jogarDnv = jogarDnv.toLowerCase()
+                if (jogarDnv === 'sim') {
+                    alert("Parabéns pela escolha! Nos veremos novamente...")
+                    Comeco()
+                } else if (jogarDnv === 'não' || jogarDnv === 'nao') {
+                    alert("Adeus jovem explorador, até a próxima!")
+                }
+            } else if (escolhaCorrerLutar === '2') {
+                alert("Você empunhou a espada e partiu para cima do Dragão!")
+                alert("- Dragão -\n\nAtaque: " + atackDg + "\nDefesa: " + defesaDg + "\nVida: " + vidaDg)
+
+                while (vidaDg > 0 && vidaPessoa > 0) {
+                    escolhaBatleDragao = prompt("O que você fará? \n\n1- Atacar o Dragão com " + atackPessoa + " de ataque agora\n2- Se defender dos " + atackDg + " de ataque do Dragão e atacar duas vezes no próximo turno")
+
+                    while (escolhaBatleDragao !== "1" && escolhaBatleDragao !== "2") {
+                        escolhaBatleDragao = prompt("Escolha uma opção válida: \n\n1- Atacar o Dragão com " + atackPessoa + " de ataque agora\n2- Se defender dos " + atackDg + " de ataque do Dragão e atacar duas vezes no próximo turno")
+                    }
+
+                    if (escolhaBatleDragao === "1") {
+                        // Atacar o Dragão
+                        danoCausado = Math.max(atackPessoa - defesaDg, 0)
+                        vidaDg -= danoCausado
+                        alert("Você atacou o Dragão! O dano causado foi " + danoCausado + ". Vida do Dragão agora é " + vidaDg + ".")
+
+                        if (vidaDg > 0) {
+                            // Calcular o dano recebido
+                            danoRecebido = Math.max(atackDg - defesaPessoa, 0)
+                            vidaPessoa -= danoRecebido
+                            alert("O Dragão atacou você e o dano recebido foi " + danoRecebido + ". Sua vida agora é " + vidaPessoa + ".")
+                        }
+                    } else if (escolhaBatleDragao === "2") {
+                        // Se defender
+                        alert("Você se defendeu do ataque do Dragão, sua defesa aumentou temporariamente.")
+
+                        defesaOriginal = defesaPessoa
+                        defesaPessoa += atackDg // Aumenta a defesa pela quantidade do ataque do Dragão
+
+                        escolhaSimNao = prompt("Agora você tem direito a atacar duas vezes! Deseja fazer o ataque duplo? \n\n'Sim' ou 'Não'")
+                        escolhaSimNao = escolhaSimNao.toLowerCase()
+
+                        if (escolhaSimNao === 'sim') {
+                            danoDuplo = Math.max(2 * atackPessoa - defesaDg, 0)
+                            vidaDg -= danoDuplo
+                            alert("Você atacou o Dragão duas vezes! O dano total causado foi " + danoDuplo + ". A vida do Dragão agora é " + vidaDg + ".")
+                        } else if (escolhaSimNao === 'não' || escolhaSimNao === 'nao') {
+                            danoSimples = Math.max(atackPessoa - defesaDg, 0)
+                            vidaDg -= danoSimples
+                            alert("Você escolheu atacar apenas uma vez, dando um dano de " + danoSimples + ". Agora o Dragão está com " + vidaDg + " de vida.")
+                        } else {
+                            alert("Opção inválida, você perde seu turno!")
+                        }
+
+                        // Restaurar defesa original
+                        defesaPessoa = defesaOriginal
+
+                        // O Dragão ataca se ainda estiver vivo
+                        if (vidaDg > 0) {
+                            danoRecebido = Math.max(atackDg - defesaPessoa, 0)
+                            vidaPessoa -= danoRecebido
+                            alert("O Dragão ainda está vivo e te atacou! O dano recebido foi " + danoRecebido + ". Sua vida agora é " + vidaPessoa + ".")
+                        }
+
+                    } else {
+                        alert("Opção inválida, você perde seu turno!")
+                    }
+
+                    if (vidaDg > 0) {
+                        // O Dragão ainda está vivo e vai atacar
+                        danoRecebido = Math.max(atackDg - defesaPessoa, 0)
+                        vidaPessoa -= danoRecebido
+                        alert("O Dragão ainda está vivo com " + vidaDg + " de vida e pronto para o próximo ataque.")
+                        alert("Agora é a vez dele! O Dragão te desferiu um ataque de " + atackDg + ", agora você está com apenas " + vidaPessoa + " de vida.")
+                    }
+                }
+
+                if (vidaPessoa <= 0) {
+                    alert("Você foi derrotado pelo Dragão. Fim de jogo.")
+                    jogarDnv = prompt("Deseja jogar novamente? ")
+                    jogarDnv = jogarDnv.toLowerCase()
+                    if (jogarDnv === 'sim') {
+                        alert("Parabéns pela escolha! Nos veremos novamente...")
+                        Comeco()
+                    } else if (jogarDnv === 'não' || jogarDnv === 'nao') {
+                        alert("Adeus jovem explorador, até a próxima!")
+                    }
+                } else {
+                    alert("Parabéns! Você derrotou o Dragão.")
+                    alert("A sua aventura terminou com sucesso! Você é um verdadeiro herói!")
+                }
+            } else {
+                alert("Opção inválida, você perde seu turno!")
+            }
+        }
+    }
+
+    // Início do jogo
+    function Comeco() {
+        nome = prompt("Bem-vindo ao Cave World! Qual seu nome?")
+        alert("Olá " + nome + ", seja bem-vindo! Agora sua aventura irá começar...")
+
+        alert("Após uma guerra nuclear, a superfície terrestre foi devastada e agora habitam dragões juntamente com criaturas desconhecidas. Agora seres humanos e não humanos vivem em cavernas fazendo tudo para sobreviver...")
+
+        alert(nome + ", aqui estão seus atributos: \n\nAtaque: " + atackPessoa + "\nDefesa: " + defesaPessoa + "\nVida: " + vidaPessoa)
+
+        alert("Você está em um buraco misterioso com dois caminhos. A sua direita, você se deparou com um caminho estreito e escuro, e ao seu lado esquerdo, você se deparou com um corredor que contém uma luz muito forte vindo lá do fundo.")
+
+        escolha = prompt("Qual será sua decisão?\n\n1- Lado direito, caminho estreito e escuro. \n2- Lado esquerdo, corredor com uma luz misteriosa.")
+
+        if (escolha === "1") {
+            escolhaItem = caminhoEstreito()
+            if (escolhaItem === 1) {
+                atackPessoa += 5
+                alert("Ao segurar a espada, você se sente muito mais forte!")
+                alert("Seu ataque está aumentando! \n\nAtaque: " + atackPessoa + "\nDefesa: " + defesaPessoa + "\nVida: " + vidaPessoa)
+            } else if (escolhaItem === 2) {
+                defesaPessoa += 10
+                alert("Ao vestir a armadura, você sente um conforto e uma confiança incrível!")
+                alert("Sua defesa está aumentando! \n\nAtaque: " + atackPessoa + "\nDefesa: " + defesaPessoa + "\nVida: " + vidaPessoa)
+            } else if (escolhaItem === 3) {
+                vidaPessoa += 30
+                alert("Ao pegar o cogumelo, você sente como se tivesse duplicado de tamanho!")
+                alert("Sua vida está aumentando! \n\nAtaque: " + atackPessoa + "\nDefesa: " + defesaPessoa + "\nVida: " + vidaPessoa)
+            }
+
+            alert("Você é curioso, né?... Agora você segue para o corredor luminoso.")
+            corredorLuz()
+        } else if (escolha === "2") {
+            corredorLuz()
+        }
+    }
+
+    Comeco()
+</script>
